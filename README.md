@@ -1,3 +1,3 @@
-# edu admin
+# edu admin online
 
-免费在线学习项目
+Free edu admin online
