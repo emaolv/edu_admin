@@ -52,11 +52,13 @@ export default {
   },
   methods: {
     saveOrUpdate() {
-      console.log(this.teacher)
       // 防止表单重复提交
       this.saveBtnDisabled = true
-      // 新增讲师信息
-      this.saveTeacherInfo()
+      if (this.teacher.id) {
+        this.updateTeacherInfo()
+      } else {
+        this.saveTeacherInfo()
+      }
     },
 
     // 数据保存
@@ -64,25 +66,44 @@ export default {
       teacher.save(this.teacher).then(
         response => {
           this.$message({
-            message: response.message,
+            message: '保存成功',
             type: 'success'
           })
-            .then(response => {
-              this.$router.push({ path: '/teacher/list' })
-            })
-            .catch(response => {
-              return this.message({
-                type: 'error',
-                message: '保存失败'
-              })
-            })
         }
       )
+        .then(response => {
+          this.$router.push({ path: '/teacher/list' })
+        })
+        .catch(response => {
+          return this.message({
+            type: 'error',
+            message: '保存失败'
+          })
+        })
     },
     fetchDataById(id) {
       teacher.getById(id).then(response => {
         this.teacher = response.data.item
       })
+    },
+    // 更新讲师信息
+    updateTeacherInfo() {
+      teacher.updateById(this.teacher).then(response => {
+        // 弹出成功提示
+        this.$message({
+          message: '更新成功',
+          type: 'success'
+        })
+      })
+        .then(response => {
+          this.$router.push({ path: '/teacher/list' })
+        })
+        .catch(response => {
+          this.message({
+            type: 'error',
+            message: '更新失败'
+          })
+        })
     }
   }
 }
