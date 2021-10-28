@@ -17,6 +17,7 @@ export default {
     return request({
       url: `/admin/edu/teacher/list/${page}/${limit}`,
       method: 'get',
+      // params 是表单传输方式
       params: searchObj
     })
   },
@@ -24,6 +25,15 @@ export default {
     return request({
       url: `/admin/edu/teacher/remove/${id}`,
       method: 'delete'
+    })
+  },
+  // 新建teacher
+  save(teacher) {
+    return request({
+      url: `/admin/edu/teacher/save`,
+      method: 'post',
+      // 后端requestbody 前端 data data是json传输方式
+      data: teacher
     })
   }
 }
