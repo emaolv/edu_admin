@@ -11,5 +11,13 @@ export default {
         method: 'get'
       }
     )
+  },
+  // 分页 数据从页面端传入
+  pageList(page, limit, searchObj) {
+    return request({
+      url: `/admin/edu/teacher/list/${page}/${limit}`,
+      method: 'get',
+      params: searchObj
+    })
   }
 }
