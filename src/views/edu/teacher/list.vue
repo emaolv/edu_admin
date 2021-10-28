@@ -129,18 +129,29 @@ export default {
       this.fetchData()
     },
     removeById(id) {
-      // 删除记录
-      teacher.removeById(id).then(
-        response => {
+      this.$confirm('此操作将永久删除该记录,是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 删除记录
+        return teacher.removeById(id)
+      }).then(response => {
         // 刷新页面
-          console.log('刷新页面')
-          this.fetchData()
-          // 弹出成功提示
+        this.fetchData()
+        // 弹出成功提示
+        this.$message({
+          message: response.message,
+          type: 'success'
+        })
+      }).catch((err) => {
+        if (err === 'cancel') {
           this.$message({
-            message: response.message,
-            type: 'success'
+            type: 'info',
+            message: '已取消删除'
           })
         }
+      }
       )
     }
   }
