@@ -44,6 +44,12 @@ export default {
       saveBtnDisabled: false
     }
   },
+  created() {
+    // 从路由获取teacher ID
+    if (this.$route.params.id) {
+      this.fetchDataById(this.$route.params.id)
+    }
+  },
   methods: {
     saveOrUpdate() {
       console.log(this.teacher)
@@ -72,6 +78,11 @@ export default {
             })
         }
       )
+    },
+    fetchDataById(id) {
+      teacher.getById(id).then(response => {
+        this.teacher = response.data.item
+      })
     }
   }
 }
