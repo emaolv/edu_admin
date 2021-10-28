@@ -1,6 +1,34 @@
 <template>
   <!-- 组件模板 -->
   <div class="app-container">
+    <!-- 查询表单 inline 横向表单-->
+    <el-form :inline="true" size="mini">
+      <el-form-item>
+        <el-input v-model="searchObj.name" placeholder="讲师" />
+      </el-form-item>
+      <el-form-item>
+        <el-select v-model="searchObj.level" clearable placeholder="头衔">
+          <el-option label="高级讲师" value="1" />
+          <el-option label="首席讲师" value="2" />
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-date-picker
+          v-model="searchObj.joinDateBegin"
+          placeholder="入驻时间"
+          value-format="yyyy-MM-dd"
+        /></el-form-item>
+      <el-form-item>
+        <el-date-picker
+          v-model="searchObj.joinDateEnd"
+          placeholder="结束时间"
+          value-format="yyyy-MM-dd"
+        /></el-form-item>
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" @click="fetchData()">查询</el-button>
+        <el-button type="default" @click="resetData()">清空</el-button>
+      </el-form-item>
+    </el-form>
     <!-- :data用于绑定数据 -->
     <el-table :data="list" border stripe>
       <el-table-column
@@ -84,6 +112,11 @@ export default {
     // 改变记录数
     changePageSize(limit) {
       this.limit = limit
+      this.fetchData()
+    },
+    // 重置表单
+    resetData() {
+      this.searchObj = {}
       this.fetchData()
     }
   }
