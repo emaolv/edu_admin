@@ -19,5 +19,11 @@ export default {
       method: 'get',
       params: searchObj
     })
+  },
+  removeById(id) {
+    return request({
+      url: `/admin/edu/teacher/remove/${id}`,
+      method: 'delete'
+    })
   }
 }
