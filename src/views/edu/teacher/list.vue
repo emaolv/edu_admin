@@ -54,6 +54,9 @@
       <el-table-column prop="joinDate" label="入驻时间" width="160" />
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
+          <router-link :to="'/teacher/edit/'+scope.row.id">
+            <el-button type="primary" size="mini">修改</el-button>
+          </router-link>
           <el-button
             size="mini"
             type="danger"
