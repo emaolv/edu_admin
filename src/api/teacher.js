@@ -35,5 +35,12 @@ export default {
       // 后端requestbody 前端 data data是json传输方式
       data: teacher
     })
+  },
+  // 根据ID获取teacher信息
+  getById(id) {
+    return request({
+      url: `/admin/edu/teacher/get/${id}`,
+      method: 'get'
+    })
   }
 }
