@@ -52,6 +52,15 @@
       <el-table-column prop="intro" label="简介" />
       <el-table-column prop="sort" label="排序" width="60" />
       <el-table-column prop="joinDate" label="入驻时间" width="160" />
+      <el-table-column label="操作" width="200">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="danger"
+            @click="removeById(scope.row.id)"
+          >删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- @current-change="changeCurrentPage" 是方法引用 不是方法调用
     组件内部定义的事件，应用该事件的方法引用 而不是方法调用
@@ -118,6 +127,21 @@ export default {
     resetData() {
       this.searchObj = {}
       this.fetchData()
+    },
+    removeById(id) {
+      // 删除记录
+      teacher.removeById(id).then(
+        response => {
+        // 刷新页面
+          console.log('刷新页面')
+          this.fetchData()
+          // 弹出成功提示
+          this.$message({
+            message: response.message,
+            type: 'success'
+          })
+        }
+      )
     }
   }
 }
