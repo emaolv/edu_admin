@@ -28,9 +28,21 @@
         <el-button type="primary" icon="el-icon-search" @click="fetchData()">查询</el-button>
         <el-button type="default" @click="resetData()">清空</el-button>
       </el-form-item>
+      <!-- 工具条 -->
+      <div style="margin-bottom: 10px">
+        <el-button type="danger" size="mini" @click="batchRemove()">
+          批量删除
+        </el-button>
+      </div>
     </el-form>
     <!-- :data用于绑定数据 -->
-    <el-table :data="list" border stripe>
+    <el-table
+      :data="list"
+      border
+      stripe
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column type="selection" />
       <el-table-column
         label="编号"
         width="50"
@@ -96,7 +108,9 @@ export default {
       // 每页记录数
       limit: 5,
       // 查询表单数据
-      searchObj: {}
+      searchObj: {},
+      // 共享数据 批量选中额记录列表
+      multipleSelection: []
     }
   },
   // 页面加载后立即显示数据
@@ -139,6 +153,50 @@ export default {
       }).then(() => {
         // 删除记录
         return teacher.removeById(id)
+      }).then(response => {
+        // 刷新页面
+        this.fetchData()
+        // 弹出成功提示
+        this.$message({
+          message: response.message,
+          type: 'success'
+        })
+      }).catch((err) => {
+        if (err === 'cancel') {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        }
+      }
+      )
+    },
+    // 当表格中多选项发生变化的时候触发
+    handleSelectionChange(selection) {
+      this.multipleSelection = selection
+    },
+    // 批量删除
+    batchRemove() {
+      if (this.multipleSelection.length === 0) {
+        this.$message({
+          type: 'warning',
+          message: '请选择要删除记录'
+        })
+        return
+      }
+      this.$confirm('此操作将永久删除所选记录,是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 获取idList
+        const idList = []
+        this.multipleSelection.forEach(item => {
+          idList.push(item.id)
+        })
+
+        // 删除记录
+        return teacher.batchRemove(idList)
       }).then(response => {
         // 刷新页面
         this.fetchData()
