@@ -4,7 +4,15 @@
     <!-- 查询表单 inline 横向表单-->
     <el-form :inline="true" size="mini">
       <el-form-item>
-        <el-input v-model="searchObj.name" placeholder="讲师" />
+        <!-- <el-input v-model="searchObj.name" placeholder="讲师" /> -->
+        <el-autocomplete
+          v-model="searchObj.name"
+          class="inline-input"
+          :fetch-suggestions="querySearch"
+          placeholder="讲师"
+          :trigger-on-focus="false"
+          value-key="name"
+        />
       </el-form-item>
       <el-form-item>
         <el-select v-model="searchObj.level" clearable placeholder="头衔">
@@ -212,9 +220,15 @@ export default {
             message: '已取消删除'
           })
         }
-      }
-      )
+      })
+    },
+    // 输入建议 queryString 关键字
+    querySearch(queryString, callback) {
+      teacher.selectNameListByKey(queryString).then(response => {
+        callback(response.data.nameList)
+      })
     }
+
   }
 }
 </script>
