@@ -50,5 +50,13 @@ export default {
       method: 'put',
       data: teacher
     })
+  },
+  // 多选删除讲师信息
+  batchRemove(idList) {
+    return request({
+      url: `/admin/edu/teacher/batchRemove`,
+      method: 'delete',
+      data: idList
+    })
   }
 }
