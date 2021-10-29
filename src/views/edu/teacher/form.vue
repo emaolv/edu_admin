@@ -9,6 +9,7 @@
           action="http://localhost:8120/admin/oss/file/upload?module=avatar"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
+          :on-error="handleAvatarError"
           :before-upload="beforeAvatarUpload"
         >
           <img v-if="teacher.avatar" :src="teacher.avatar" class="avatar">
@@ -153,8 +154,12 @@ export default {
         this.teacher.avatar = response.data.url
         this.$forceUpdate()
       } else {
-        this.$message.error('上传失败')
+        this.$message.error('上传失败！（非20000）')
       }
+    },
+    // 文件上传失败（http）
+    handleAvatarError() {
+      this.$message.error('上传失败！（http）')
     },
     // 文件上传前的校验
     beforeAvatarUpload(file) {
